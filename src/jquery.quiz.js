@@ -108,8 +108,12 @@
       start: function() {
         base.$el.removeClass('quiz-start-state').addClass('quiz-questions-state');
         $(startScreen).hide();
-        $('#quiz-controls').hide();
-        $('#quiz-finish-btn').hide();
+        $('#quiz-controls').hide(); 
+        // Handle single question      
+        if (numQuestions === 1 ) {
+          $('#quiz-next-btn').hide();
+          $('#quiz-finish-btn').show();
+        }
         $('#quiz-restart-btn').hide();
         $('#questions').show();
         $('#quiz-counter').show();
@@ -161,11 +165,12 @@
         $('#quiz-controls').hide();
 
         // check to see if we are at the last question
-        if (++currentQuestion === numQuestions) {
+        currentQuestion++;
+        if (currentQuestion >= numQuestions || numQuestions === 1 ) {
           $('#quiz-next-btn').hide();
           $('#quiz-finish-btn').show();
         }
-
+        
         base.methods.updateCounter();
 
         if (typeof base.options.nextCallback === 'function') {
@@ -223,7 +228,14 @@
         $(resultsScreen).hide();
         $('#quiz-controls').hide();
         $('#quiz-response').show();
-        $('#quiz-next-btn').show();
+        // Handle single question
+        if (numQuestions === 1 ) {
+          $('#quiz-next-btn').hide();
+          $('#quiz-finish-btn').show();          
+        }else{
+          $('#quiz-next-btn').show();
+          $('#quiz-finish-btn').hide();
+        }
         $('#quiz-counter').hide();
         $('.active-question').hide().removeClass('active-question');
       },
